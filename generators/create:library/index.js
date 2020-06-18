@@ -90,77 +90,66 @@ module.exports = class extends Generator {
         type: "string",
         name: "githubOrg",
         message: "Which Github org/user will host this?",
-        store: true,
         default: defaults.githubOrg || ""
       },
       {
         type: "string",
         name: "repoName",
         message: "What will your repo be called?",
-        store: true,
         default: defaults.repoName || this.appname || ""
       },
       {
         type: "string",
         name: "packageName",
         message: "What will your NPM package be called?",
-        store: true,
         default: defaults.packageName || ""
       },
       {
         type: "string",
         name: "packageDescription",
         message: "Describe your package (for package.json)",
-        store: true,
         default: defaults.packageDescription || ""
       },
       {
         type: "string",
         name: "copyrightHolder",
         message: "Who owns the copyright to this code?",
-        store: true,
         default: defaults.copyrightHolder || ""
       },
       {
         type: "string",
         name: "copyrightWebsite",
         message: "What is the website for the copyright holder?",
-        store: true,
         default: defaults.copyrightWebsite || ""
       },
       {
         type: "string",
         name: "copyrightYear",
         message: "What year does the copyright start from?",
-        store: true,
         default: defaults.copyrightYear || new Date().getFullYear()
       },
       {
         type: "string",
         name: "packageContactEmail",
         message: "Where can people email you about this package?",
-        store: true,
         default: defaults.packageContactEmail || ""
       },
       {
         type: "string",
         name: "authorName",
         message: "Who is the author of this package?",
-        store: true,
         default: defaults.authorName || ""
       },
       {
         type: "string",
         name: "authorEmail",
         message: "What is the author's email address?",
-        store: true,
         default: defaults.authorEmail || ""
       },
       {
         type: "string",
         name: "authorWebsite",
         message: "What is the author's website?",
-        store: true,
         default: defaults.authorWebsite || ""
       },
       {
@@ -168,7 +157,6 @@ module.exports = class extends Generator {
         name: "license",
         message: "Which license will your code use?",
         choices: licenseChoices,
-        store: true,
         default: defaults.license || ""
       },
       {
@@ -176,7 +164,6 @@ module.exports = class extends Generator {
         name: "branchingModel",
         message: "Which branching model will your repo use?",
         choices: branchingChoices,
-        store: true,
         defaults: defaults.branchingModel || ""
       }
     ];
@@ -202,6 +189,7 @@ module.exports = class extends Generator {
     //
     // this is handy for stashing answers at the per-github-org folder
     // level
+    fs.writeFileSync(userHome + "/.yo-safelytyped.json", JSON.stringify(defaults, null, 2) + "\n");
     fs.writeFileSync(path, JSON.stringify(defaults, null, 2) + "\n");
 
     // alright, let's turn the answers into action
@@ -327,6 +315,15 @@ export const MODULE_NAME = makeNodeJSModuleName("${this.answers.packageName}/lib
         );
       });
     }
+
+    // finally, we want to write our defaults into the new repo folder
+    // too
+    //
+    // these will get picked up by any generators we run inside the folder
+    this.fs.write(
+      this.destinationPath(this.answers.reportName + "/.yo-safelytyped.json"),
+      JSON.stringify(defaults, null, 2) + "\n"
+    );
   }
 
   end() {
