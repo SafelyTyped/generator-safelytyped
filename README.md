@@ -29,6 +29,10 @@ yo safelytyped:create:library <folder-name>
 cd $HOME/Projects/myGitOrganisationOrUser/ProjectName
 yo safelytyped:create:branded <new-type> <string|number>
 
+# creates a skeleton refined type
+cd $HOME/Projects/myGitOrganisationOrUser/ProjectName
+yo safelytyped:create:refinedtype <new-type> <RefinedNumber|RefinedString>
+
 # creates a skeleton ValueObject
 cd $HOME/Projects/myGitOrganisationOrUser/ProjectName
 yo safelytyped:create:valueobject <new-type> <any[]|object>
