@@ -25,19 +25,18 @@ module.exports = class extends Generator {
     path = findUp.sync(".yo-safelytyped.json");
     if (path === undefined) {
       path = userHome + "/.yo-safelytyped.json";
-    } else {
-      // `this.options` is polluted with other things
-      // we have to explicitly extract what we want from it
-      // to safely use it :(
-      const options = { repoName: this.options.repoName };
-
-      fs.readFile(path, "utf8", function(err, data) {
-        if (!err) {
-          // merge our user preferences with any local values
-          defaults = { ...JSON.parse(data), ...defaults, ...options };
-        }
-      });
     }
+
+    // `this.options` is polluted with other things
+    // we have to explicitly extract what we want from it
+    // to safely use it :(
+    const options = {
+      repoName: this.options.repoName,
+    };
+    defaults = { ...defaults, ...options };
+
+    const data = fs.readFileSync(path, "utf8");
+    defaults = { ...JSON.parse(data), ...defaults };
   }
 
   prompting() {
