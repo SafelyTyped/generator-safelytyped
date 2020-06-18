@@ -12,6 +12,11 @@ let defaults = {};
 let path;
 
 module.exports = class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
+    this.argument("repoName", { type: String, required: true });
+  }
+
   initializing() {
     // we start with whatever Yeoman stored locally
     defaults = this.config.getAll().promptValues || {};
@@ -21,10 +26,15 @@ module.exports = class extends Generator {
     if (path === undefined) {
       path = userHome + "/.yo-safelytyped.json";
     } else {
+      // `this.options` is polluted with other things
+      // we have to explicitly extract what we want from it
+      // to safely use it :(
+      const options = { repoName: this.options.repoName };
+
       fs.readFile(path, "utf8", function(err, data) {
         if (!err) {
           // merge our user preferences with any local values
-          defaults = { ...JSON.parse(data), ...defaults };
+          defaults = { ...JSON.parse(data), ...defaults, ...options };
         }
       });
     }
