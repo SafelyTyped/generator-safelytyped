@@ -28,7 +28,7 @@ export function validate<%= typeName %>Data (
     //
     // this is an example for you to replace ...
     if (!<%= typeName %>Regex.test(input)) {
-        return new Invalid<%= typeName %>Error({
+        return new Invalid<%= typeName %>DataError({
             public: {
                 dataPath: path,
                 input: input
