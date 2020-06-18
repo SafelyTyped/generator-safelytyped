@@ -269,6 +269,34 @@ module.exports = class extends Generator {
       this.destinationPath(this.answers.repoName + "/src/v1/index.ts"),
       defaults
     );
+    this.fs.copyTpl(
+      this.templatePath("indexes/" + this.answers.license + ".ts"),
+      this.destinationPath(this.answers.repoName + "/src/v1/Errors/index.ts"),
+      defaults
+    );
+    this.fs.append(
+      this.destinationPath(this.answers.repoName + "/src/v1/Errors/index.ts"),
+`
+export * from "./defaults/MODULE_NAME";
+`
+    );
+    this.fs.copyTpl(
+      this.templatePath("indexes/" + this.answers.license + ".ts"),
+      this.destinationPath(this.answers.repoName + "/src/v1/Errors/defaults/MODULE_NAME.ts"),
+      defaults
+    );
+    this.fs.append(
+      this.destinationPath(this.answers.repoName + "/src/v1/Errors/defaults/MODULE_NAME.ts"),
+`
+import { makeNodeJSModuleName } from "@safelytyped/core-types";
+
+/**
+ * \`MODULE_NAME\` is used by all of our errors to show which package they
+ * were defined in.
+ */
+export const MODULE_NAME = makeNodeJSModuleName("${this.answers.packageName}/lib/v1");
+`
+    );
 
     // step 3 - files that we do not create for Proprietary works
     if (this.answers.license !== "Proprietary") {
