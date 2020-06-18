@@ -1,4 +1,4 @@
-<%= typescriptHeader %>
+<%- typescriptHeader %>
 
 import { DEFAULT_DATA_PATH, isData } from "@safelytyped/core-types";
 

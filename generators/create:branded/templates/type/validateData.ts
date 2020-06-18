@@ -1,4 +1,4 @@
-<%= typescriptHeader %>
+<%- typescriptHeader %>
 
 import { AppErrorOr, DataPath } from "@safelytyped/core-types";
 

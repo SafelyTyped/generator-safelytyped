@@ -1,4 +1,4 @@
-<%= typescriptHeader %>
+<%- typescriptHeader %>
 
 import { Branded } from "@safelytyped/core-types";
 

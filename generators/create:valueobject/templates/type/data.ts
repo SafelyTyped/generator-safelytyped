@@ -1,4 +1,4 @@
-<%= typescriptHeader %>
+<%- typescriptHeader %>
 
 /**
  * `<%= typeName %>`Data is the input required to make a new

@@ -1,4 +1,4 @@
-<%= typescriptHeader %>
+<%- typescriptHeader %>
 
 import { DataPath, ExtraPublicData } from "@safelytyped/core-types";
 
