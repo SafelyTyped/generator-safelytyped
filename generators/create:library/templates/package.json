@@ -27,7 +27,7 @@
   ],
   "license": "<%= npmLicense %>",
   "dependencies": {
-    "@safelytyped/core-types": "0.1.0"
+    "@safelytyped/core-types": "^0.1.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.8",

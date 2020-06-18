@@ -118,6 +118,13 @@ module.exports = class extends Generator {
         defaults
       )
     });
+
+    // we need to update the Errors/index.ts file
+    this.fs.append(
+      this.destinationPath("src/v1/Errors/index.ts"),
+`export * from "./Invalid${defaults.typeName}";
+`
+    );
   }
 
   end() {
