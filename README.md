@@ -21,5 +21,15 @@ sudo npm install -g yo generator-safelytyped
 In your terminal:
 
 ```shell
-yo safelytyped:create:library
+# creates a skeleton TypeScript library project
+cd $HOME/Projects/myGitOrganisationOrUser
+yo safelytyped:create:library <folder-name>
+
+# creates a skeleton branded type
+cd $HOME/Projects/myGitOrganisationOrUser/ProjectName
+yo safelytyped:create:branded <new-type> <string|number>
+
+# creates a skeleton ValueObject
+cd $HOME/Projects/myGitOrganisationOrUser/ProjectName
+yo safelytyped:create:valueobject <new-type> <any[]|object>
 ```

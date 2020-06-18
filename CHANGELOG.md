@@ -27,3 +27,5 @@ The following changes have been completed, and will be included in the next tagg
   - initial version
 * `safelytyped:create:branded`
   - initial version
+* `safelytyped:create:valueobject`
+  - initial version
