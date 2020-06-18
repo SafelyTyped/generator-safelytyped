@@ -212,6 +212,9 @@ module.exports = class extends Generator {
         src: ".eslintrc.js",
       },
       {
+        src: ".github"
+      },
+      {
         src: ".gitignore",
       },
       {
