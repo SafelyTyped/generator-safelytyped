@@ -321,7 +321,11 @@ export const MODULE_NAME = makeNodeJSModuleName("${this.answers.packageName}/lib
     //
     // these will get picked up by any generators we run inside the folder
     this.fs.write(
-      this.destinationPath(this.answers.reportName + "/.yo-safelytyped.json"),
+      this.destinationPath(".yo-safelytyped.json"),
+      JSON.stringify(defaults, null, 2) + "\n"
+    );
+    this.fs.write(
+      this.destinationPath(this.answers.repoName + "/.yo-safelytyped.json"),
       JSON.stringify(defaults, null, 2) + "\n"
     );
   }
