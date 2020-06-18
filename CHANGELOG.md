@@ -25,3 +25,5 @@ The following changes have been completed, and will be included in the next tagg
 
 * `safelytyped:create:library`
   - initial version
+* `safelytyped:create:branded`
+  - initial version
