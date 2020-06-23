@@ -109,7 +109,8 @@ module.exports = class extends Generator {
         type: "string",
         name: "packageName",
         message: "What will your NPM package be called?",
-        transformer: (input, answers) => {
+        default: (answers) => {
+          // okay, we've been called before the user is prompted
           let retval = "";
           if (answers.packageIsScoped) {
             retval = "@" + answers.githubOrg.toLowerCase() + "/";
