@@ -108,7 +108,20 @@ module.exports = class extends Generator {
         type: "string",
         name: "packageName",
         message: "What will your NPM package be called?",
-        default: defaults.packageName || ""
+        transformer: (input, answers) => {
+          let retval = "";
+          if (answers.packageIsScoped) {
+            retval = "@" + answers.githubOrg.toLowerCase() + "/";
+          }
+
+          if (answers.repoName.startsWith("ts-")) {
+            retval += answers.repoName.substring(3);
+          } else {
+            retval += answers.repoName;
+          }
+
+          return retval;
+        }
       },
       {
         type: "string",
