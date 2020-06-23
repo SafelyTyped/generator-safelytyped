@@ -99,6 +99,12 @@ module.exports = class extends Generator {
         default: defaults.repoName || this.appname || ""
       },
       {
+        type: "confirm",
+        name: "packageIsScoped",
+        message: "Is this going to be a scoped package?",
+        default: true,
+      },
+      {
         type: "string",
         name: "packageName",
         message: "What will your NPM package be called?",
