@@ -6,6 +6,7 @@ const fs = require("fs");
 const findUp = require("find-up");
 const Generator = require("yeoman-generator");
 const userHome = require("user-home");
+const { execSync } = require("child_process");
 // const chalk = require("chalk");
 
 let defaults = {};
@@ -184,6 +185,12 @@ module.exports = class extends Generator {
         message: "Which branching model will your repo use?",
         choices: branchingChoices,
         defaults: defaults.branchingModel || ""
+      },
+      {
+        type: "confirm",
+        name: "autoGitInit",
+        message: "Shall we create the local Git repo for you?",
+        defaults: defaults.autoGitInit || true
       }
     ];
 
@@ -349,6 +356,29 @@ export const MODULE_NAME = makeNodeJSModuleName("${this.answers.packageName}/lib
     );
   }
 
+  install() {
+    // shorthand
+    const cmdPrefix = "cd " + this.destinationPath(this.answers.repoName) + " && ";
+
+    // step 1: create the local Git repo
+    if (this.answers.autoGitInit) {
+      // shorthand
+      runCmd(this, cmdPrefix + "git init .");
+      runCmd(this, cmdPrefix + "git add *");
+      runCmd(this, cmdPrefix + "git add .es* .g* .n*");
+      runCmd(this, cmdPrefix + "git remote add origin git@github.com:" + this.answers.githubOrg + "/" + this.answers.repoName);
+    }
+
+    // step 2: install dependencies
+    runCmd(this, cmdPrefix + "npm install");
+
+    // step 3: add the package-lock file to Git
+    if (this.answers.autoGitInit) {
+      runCmd(this, cmdPrefix + "git add package.json package-lock.json");
+      runCmd(this, cmdPrefix + "git commit -m 'Initial commit'");
+    }
+  }
+
   end() {
     // all done
     this.log();
@@ -358,10 +388,32 @@ export const MODULE_NAME = makeNodeJSModuleName("${this.answers.packageName}/lib
     this.log();
     this.log("Next steps:");
     this.log();
-    this.log(`- cd ${this.answers.repoName} && git init .`);
-    this.log(`- review all of the files we have created`);
-    this.log(`- npm install`);
-    this.log(`- add them all to git`);
-    this.log(`- git push to your remote repository`);
+
+    if (this.answers.autoGitInit) {
+      this.log(`- cd ${this.answers.repoName}`);
+      this.log(`- review all of the files we have created`);
+      this.log(`- git push to your remote repository`);
+    } else {
+      this.log(`- cd ${this.answers.repoName} && git init .`);
+      this.log(`- review all of the files we have created`);
+      this.log(`- npm install`);
+      this.log(`- add them all to git`);
+      this.log(`- git push to your remote repository`);
+    }
   }
 };
+
+function runCmd(context, cmd) {
+  context.log("Running command: " + cmd);
+  execSync(cmd, (error, stdout, stderr) => {
+    if(error) {
+      context.log(`error: ${error.message}`);
+    }
+
+    if(stderr) {
+      context.log(`stderr: ${stderr}`);
+    }
+
+    context.log(`stdout: ${stdout}`);
+  });
+}
