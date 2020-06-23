@@ -300,6 +300,11 @@ module.exports = class extends Generator {
 export * from "./defaults/MODULE_NAME";
 `
     );
+
+    // shorthand
+    console.log(this.answers);
+    const MODULE_NAME = this.answers.packageName + "/lib/v1";
+
     this.fs.copyTpl(
       this.templatePath("indexes/" + this.answers.license + ".ts"),
       this.destinationPath(this.answers.repoName + "/src/v1/Errors/defaults/MODULE_NAME.ts"),
@@ -314,9 +319,29 @@ import { makeNodeJSModuleName } from "@safelytyped/core-types";
  * \`MODULE_NAME\` is used by all of our errors to show which package they
  * were defined in.
  */
-export const MODULE_NAME = makeNodeJSModuleName("${this.answers.packageName}/lib/v1");
+export const MODULE_NAME = makeNodeJSModuleName("${MODULE_NAME}");
 `
     );
+    this.fs.copyTpl(
+      this.templatePath("indexes/" + this.answers.license + ".ts"),
+      this.destinationPath(this.answers.repoName + "/src/v1/Errors/defaults/MODULE_NAME.spec.ts"),
+      defaults
+    );
+    this.fs.append(
+      this.destinationPath(this.answers.repoName + "/src/v1/Errors/defaults/MODULE_NAME.spec.ts"),
+`
+import { describe } from "mocha";
+import { expect } from "chai";
+import { MODULE_NAME } from "./MODULE_NAME";
+
+describe("MODULE_NAME", () => {
+    it("has the value '${MODULE_NAME}'", () => {
+         expect(MODULE_NAME).to.equal("${MODULE_NAME}");
+    });
+});
+`
+    );
+
 
     // step 3 - files that we do not create for Proprietary works
     if (this.answers.license !== "Proprietary") {
