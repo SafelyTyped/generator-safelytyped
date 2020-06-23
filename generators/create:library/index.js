@@ -197,8 +197,10 @@ module.exports = class extends Generator {
     return this.prompt(prompts).then(answers => {
       // special case - NPM / SPDX doesn't handle proprietary licenses
       answers.npmLicense = answers.license;
+      answers.packageAccess = "public";
       if (answers.license === "Proprietary") {
         answers.npmLicense = "SEE LICENSE IN LICENSE.md";
+        answers.packageAccess = "restricted";
       }
 
       // To access props later use this.props.someAnswer;
